@@ -60,6 +60,21 @@ public class CarController {
 
     }
 
+    @DeleteMapping("/{id}")
+    public String deleteCar(@PathVariable Long id) {
+
+        boolean deleted = carService.softDeleteCar(id);
+
+        if (deleted) {
+
+            return "Car deleted successfully";
+
+        }
+
+        return "Car not found";
+
+    }
+
 
 
 

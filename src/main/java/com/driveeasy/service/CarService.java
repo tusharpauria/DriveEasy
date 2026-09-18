@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @Service
 public class CarService {
 
@@ -25,15 +27,9 @@ public class CarService {
 
     }
 
-    public List<Car> getAllCars() {
-
-        return carRepository.findAll();
-
-    }
-
     public Optional<Car> getCarById(Long id) {
 
-        return carRepository.findById(id);
+        return carRepository.findByIdAndDeletedFalse(id);
 
     }
 
@@ -58,9 +54,29 @@ public class CarService {
 
     }
 
-    public  void deleteCar(Long id) {
+    public boolean softDeleteCar(Long id) {
 
-        carRepository.deleteById(id);
+        Optional<Car> optionalCar = carRepository.findById(id);
+
+        if (optionalCar.isPresent()) {
+
+            Car car = optionalCar.get();
+
+            car.setDeleted(true);
+
+            carRepository.save(car);
+
+            return true;
+
+        }
+
+        return false;
+
+    }
+
+    public List<Car> getAllCars() {
+
+        return carRepository.findByDeletedFalse();
 
     }
 
