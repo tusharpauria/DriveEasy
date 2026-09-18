@@ -2,6 +2,9 @@ package com.driveeasy.service;
 
 import com.driveeasy.Car;
 import com.driveeasy.repository.CarRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -74,9 +77,11 @@ public class CarService {
 
     }
 
-    public List<Car> getAllCars() {
+    public Page<Car> getAllCars(int page, int size) {
 
-        return carRepository.findByDeletedFalse();
+        Pageable pageable = PageRequest.of(page, size);
+
+        return carRepository.findByDeletedFalse(pageable);
 
     }
 
