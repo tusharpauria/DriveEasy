@@ -75,6 +75,13 @@ public class CarController {
 
     }
 
+    @GetMapping("/available")
+    public List<Car> getAvailableCars() {
+
+        return carService.getAvailableCars();
+
+    }
+
 
 
 

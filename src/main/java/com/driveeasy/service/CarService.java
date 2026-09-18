@@ -80,5 +80,11 @@ public class CarService {
 
     }
 
+    public List<Car> getAvailableCars() {
+
+        return carRepository.findByAvailableTrueAndDeletedFalse();
+
+    }
+
 
 }
