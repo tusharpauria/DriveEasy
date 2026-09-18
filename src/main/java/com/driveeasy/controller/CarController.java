@@ -2,6 +2,8 @@ package com.driveeasy.controller;
 
 import com.driveeasy.Car;
 import com.driveeasy.service.CarService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +23,13 @@ public class CarController {
     }
 
     @PostMapping
-    public Car addCar(@RequestBody Car car) {
+    public ResponseEntity<Car> addCar(@Valid @RequestBody Car car) {
 
-        return carService.addCar(car);
+        Car savedCar = carService.addCar(car);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(savedCar);
 
     }
 
@@ -49,7 +55,7 @@ public class CarController {
     @PutMapping("/{id}")
     public ResponseEntity<Car> updateCar(
             @PathVariable Long id,
-            @RequestBody Car updatedCar) {
+           @Valid @RequestBody Car updatedCar) {
 
         Optional<Car> car = carService.updateCar(id, updatedCar);
 
@@ -61,18 +67,17 @@ public class CarController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteCar(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCar(@PathVariable Long id) {
 
         boolean deleted = carService.softDeleteCar(id);
 
         if (deleted) {
 
-            return "Car deleted successfully";
+            return ResponseEntity.noContent().build();
 
         }
 
-        return "Car not found";
-
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/available")
