@@ -87,7 +87,12 @@ public class CarController {
 
     }
 
+    @GetMapping("/search")
+    public List<Car> searchByBrand(@RequestParam String brand) {
 
+        return carService.searchByBrand(brand);
+
+    }
 
 
 }

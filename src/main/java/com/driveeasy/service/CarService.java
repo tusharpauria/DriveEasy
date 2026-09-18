@@ -86,5 +86,11 @@ public class CarService {
 
     }
 
+    public List<Car> searchByBrand(String brand) {
+
+        return carRepository.findByBrandIgnoreCaseAndDeletedFalse(brand);
+
+    }
+
 
 }
